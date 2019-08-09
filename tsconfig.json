@@ -2,7 +2,8 @@
     "compilerOptions": {
         "module": "commonjs",
         "esModuleInterop": true,
-        "target": "es6",
+        "allowSyntheticDefaultImports": true,
+        "target": "esnext",
         "noImplicitAny": true,
         "moduleResolution": "node",
         "sourceMap": true,

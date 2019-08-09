@@ -6,32 +6,21 @@
     },
     "extends": [
         "eslint:recommended",
-        "prettier",
         "prettier/@typescript-eslint",
+        "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended",
         "plugin:jest/recommended"
     ],
-    "plugins": ["prettier", "jest"],
+    "plugins": ["@typescript-eslint", "prettier", "jest"],
     "parserOptions": {
-        "ecmaVersion": 2017,
-        "sourceType": "module",
-        "impliedStrict": true
+        "ecmaVersion": 2018,
+        "sourceType": "module"
     },
+    "parser": "@typescript-eslint/parser",
     "rules": {
-        "no-console": ["error", { "allow": ["warn", "error", "log"] }],
         "indent": ["error", 4],
         "linebreak-style": ["error", "unix"],
         "quotes": ["error", "single"],
-        "comma-dangle": [
-            "error",
-            {
-                "arrays": "always-multiline",
-                "objects": "always-multiline",
-                "imports": "always-multiline",
-                "exports": "always-multiline",
-                "functions": "never"
-            }
-        ],
         "@typescript-eslint/explicit-function-return-type": "off"
     }
 }
