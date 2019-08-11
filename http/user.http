@@ -1,0 +1,22 @@
+@url = http://localhost:3000
+
+# ユーザー作成
+POST {{url}}/v0/user
+content-type: application/json
+
+{
+    "email": "example@example.com",
+    "password": "password",
+    "em_name": "이진섭",
+    "gender": "M",
+    "contact_number": "080-00000-0000"
+}
+
+### ユーザーログイン
+POST {{url}}/v0/user/token
+content-type: application/json
+
+{
+    "email": "example@example.com",
+    "password": "password"
+}
