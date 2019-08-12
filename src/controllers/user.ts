@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import moment from 'moment';
 import uuidv4 from 'uuid/v4';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import * as userModel from '@models/user';
 // import logger from '@util/logger';
 
@@ -22,16 +23,23 @@ export const postToken = async (req: Request, res: Response) => {
 
     const isSame = await bcrypt.compare(password, hash);
 
-    const header = {
-        alg: 'HS512',
-        typ: 'JWT',
-    };
+    if (isSame) {
+        const payload = {
+            iss: 'bridge',
+            sub: email,
+            exp: moment().unix() + 60 * 60,
+            role: 'user',
+        };
 
-    const payload = {
-        jti: uuidv4(),
-        iss: 'bridge',
-        sub: email,
-        exp: moment().unix() + 60 * 60,
-        role: 'user',
-    };
+        const options = { algorithm: 'RS512' };
+
+        const token = jwt.sign(payload, process.env.JWT_PRIVATE_KEY, options);
+
+        res.status(200);
+        res.json({ token });
+    }
+
+    res.json({});
 };
+
+const createJWT = () => {};
