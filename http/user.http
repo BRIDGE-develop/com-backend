@@ -5,11 +5,13 @@ POST {{url}}/v0/user
 content-type: application/json
 
 {
-    "email": "example@example.com",
-    "password": "password",
-    "em_name": "이진섭",
-    "gender": "M",
-    "contact_number": "080-00000-0000"
+    "data": {
+        "email": "example@example.com",
+        "password": "password",
+        "em_name": "이진섭",
+        "gender": "M",
+        "contact_number": "080-00000-0000"
+    }
 }
 
 ### ユーザーログイン

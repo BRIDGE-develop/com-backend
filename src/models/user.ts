@@ -3,6 +3,7 @@ import connectDB from '@util/dbConnect';
 interface User {
     email: string;
     password: string;
+    is_admin: 0 | 1;
     em_name: string;
     gender: 'M' | 'F';
     contact_number?: string;

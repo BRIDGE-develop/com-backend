@@ -7,7 +7,7 @@ import * as userModel from '@models/user';
 // import logger from '@util/logger';
 
 export const postUser = async (req: Request, res: Response) => {
-    const user = req.body;
+    const { user } = req.body;
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
@@ -19,16 +19,16 @@ export const postUser = async (req: Request, res: Response) => {
 export const postToken = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    const { password: hash } = await userModel.read(email);
+    const { password: hash, is_admin } = await userModel.read(email);
 
     const isSame = await bcrypt.compare(password, hash);
 
     if (isSame) {
         const payload = {
-            iss: 'bridge',
+            iss: 'http://www.bridgejp.net',
             sub: email,
             exp: moment().unix() + 60 * 60,
-            role: 'user',
+            admin: is_admin,
         };
 
         const options = { algorithm: 'RS512' };
