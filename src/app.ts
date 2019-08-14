@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import * as userController from '@controllers/user';
 import { errorHandler } from '@middlewares/errorHandler';
 import asyncErrorHandler from '@util/asyncErrorHandler';
+import authenticate from '@middlewares/authenticate';
+import { postUserValidator, postTokenValidator } from '@util/validator';
 
 dotenv.config();
 
@@ -16,9 +18,12 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// custom middlewares
+app.use(authenticate);
+
 // app routes
-app.post('/v0/user', asyncErrorHandler(userController.postUser));
-app.post('/v0/user/token', asyncErrorHandler(userController.postToken));
+app.post('/v0/user', postUserValidator, asyncErrorHandler(userController.postUser));
+app.post('/v0/user/token', postTokenValidator, asyncErrorHandler(userController.postToken));
 
 // error handlers
 app.use(errorHandler);
