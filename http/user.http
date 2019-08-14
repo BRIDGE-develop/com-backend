@@ -5,7 +5,7 @@ POST {{url}}/v0/user
 content-type: application/json
 
 {
-    "data": {
+    "user": {
         "email": "example@example.com",
         "password": "password",
         "em_name": "이진섭",
@@ -19,6 +19,8 @@ POST {{url}}/v0/user/token
 content-type: application/json
 
 {
-    "email": "example@example.com",
-    "password": "password"
+    "user": {
+        "email": "example@example.com",
+        "password": "password"
+    }
 }

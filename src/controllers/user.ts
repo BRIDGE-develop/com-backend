@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
-import moment from 'moment';
-import uuidv4 from 'uuid/v4';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import * as userModel from '@models/user';
-// import logger from '@util/logger';
+import logger from '@util/logger';
+import { sign } from '@util/jwt';
 
 export const postUser = async (req: Request, res: Response) => {
     const { user } = req.body;
@@ -13,33 +11,27 @@ export const postUser = async (req: Request, res: Response) => {
 
     const result = await userModel.create({ ...user, password: hashedPassword });
 
-    res.send(result);
+    logger.info(`${user.email} created`, result);
+
+    res.json({ message: `${user.email} created` });
 };
 
 export const postToken = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body.user;
 
-    const { password: hash, is_admin } = await userModel.read(email);
+    const user = await userModel.read(email);
 
-    const isSame = await bcrypt.compare(password, hash);
+    if (!user) res.status(404).json({ message: `${email} not exists.` });
 
-    if (isSame) {
-        const payload = {
-            iss: 'http://www.bridgejp.net',
-            sub: email,
-            exp: moment().unix() + 60 * 60,
-            admin: is_admin,
-        };
+    const isSame = await bcrypt.compare(password, user.password);
 
-        const options = { algorithm: 'RS512' };
-
-        const token = jwt.sign(payload, process.env.JWT_PRIVATE_KEY, options);
-
-        res.status(200);
-        res.json({ token });
+    if (!isSame) res.status(401).json({ message: `${user.email}'s password is incorrect` });
+    else {
+        const jwt = sign(user);
+        if (jwt) {
+            // TODO: add secure: true option for Production use.
+            res.cookie('jwtToken', jwt, { httpOnly: true, maxAge: 1000 * 60 * 60 * 5 });
+            res.json({ message: `${user.email} signed in` });
+        }
     }
-
-    res.json({});
 };
-
-const createJWT = () => {};

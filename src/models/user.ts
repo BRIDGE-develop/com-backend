@@ -1,6 +1,6 @@
 import connectDB from '@util/dbConnect';
 
-interface User {
+export interface User {
     email: string;
     password: string;
     is_admin: 0 | 1;
@@ -18,7 +18,7 @@ export const create = async (values: User) => {
     return result;
 };
 
-export const read = async (email: string) => {
+export const read = async (email: string): Promise<User> => {
     const connection = await connectDB();
 
     const [user] = await connection.query('SELECT * FROM employees WHERE email = ?', [email]);
