@@ -30,7 +30,7 @@ export const postToken = async (req: Request, res: Response) => {
         const jwt = sign(user);
         if (jwt) {
             // TODO: add secure: true option for Production use.
-            res.cookie('jwtToken', jwt, { httpOnly: true, maxAge: 1000 * 60 * 60 * 5 });
+            res.cookie('jwt', jwt, { httpOnly: true, maxAge: 1000 * 60 * 60 * 5 });
             res.json({ message: `${user.email} signed in` });
         }
     }

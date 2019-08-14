@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { User } from '@models/user';
 
 export const sign = (user: User) => {
-    const options = { algorithm: 'RS512' };
+    const options = { algorithm: 'RS1024' };
 
     const payload = {
         iss: 'http://www.bridgejp.net',
@@ -13,12 +13,11 @@ export const sign = (user: User) => {
         admin: user.is_admin,
     };
 
-    console.log(process.env.JWT_PRIVATE_KEY);
     return jwt.sign(payload, process.env.JWT_PRIVATE_KEY, options);
 };
 
 export const verify = (token: string) => {
-    const options = { algorithms: ['RS512'] };
+    const options = { algorithms: ['RS1024'] };
 
     jwt.verify(token, process.env.JWT_PUBLIC_KEY, options);
 };
