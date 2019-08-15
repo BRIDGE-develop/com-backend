@@ -24,7 +24,7 @@ export const postToken = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     const user = await userModel.read(email);
-    if (!user) return res.status(404).json({ error: `${email} not exists.` });
+    if (!user) return res.status(404).json({ error: `${email} does not exists.` });
 
     const isSame = await bcrypt.compare(password, user.password);
     if (!isSame) return res.status(401).json({ error: `${user.email}'s password is incorrect` });
