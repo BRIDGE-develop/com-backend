@@ -1,6 +1,6 @@
 import mysql from 'promise-mysql';
 
-let db: mysql.Connection;
+export let db: mysql.Connection;
 
 const connectDB = async () => {
     return db

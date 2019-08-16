@@ -7,7 +7,8 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
     if (
         method === 'GET' ||
         method === 'OPTION' ||
-        (method === 'POST' && path.split('/').pop() === ('token' || 'user'))
+        (method === 'POST' && path.split('/').pop() === 'token') ||
+        (method === 'POST' && path.split('/').pop() === 'user')
     )
         return next();
 

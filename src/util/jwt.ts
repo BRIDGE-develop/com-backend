@@ -1,4 +1,3 @@
-import moment from 'moment';
 import jwt from 'jsonwebtoken';
 import { User } from '@models/user';
 
@@ -8,7 +7,6 @@ export const sign = (user: User) => {
     const payload = {
         iss: 'http://www.bridgejp.net',
         sub: user.email,
-        exp: moment().unix() + 60 * 60 * 5,
         admin: user.is_admin,
     };
 

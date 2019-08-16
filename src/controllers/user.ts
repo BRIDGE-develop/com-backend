@@ -7,7 +7,10 @@ import { sign } from '@util/jwt';
 
 export const postUser = async (req: Request, res: Response) => {
     const errors = validationResult(req);
-    if (!validationResult(req).isEmpty()) return res.status(422).json({ error: errors.array() });
+    if (!errors.isEmpty()) {
+        logger.error(errors.array());
+        return res.status(422).json({ error: errors.array() });
+    }
 
     const user = req.body;
     const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -19,12 +22,15 @@ export const postUser = async (req: Request, res: Response) => {
 
 export const postToken = async (req: Request, res: Response) => {
     const errors = validationResult(req);
-    if (!validationResult(req).isEmpty()) return res.status(422).json({ error: errors.array() });
+    if (!errors.isEmpty()) {
+        logger.error(errors.array());
+        return res.status(422).json({ error: errors.array() });
+    }
 
     const { email, password } = req.body;
 
     const user = await userModel.read(email);
-    if (!user) return res.status(404).json({ error: `${email} does not exists.` });
+    if (!user) return res.status(404).json({ error: `${email} does not exist` });
 
     const isSame = await bcrypt.compare(password, user.password);
     if (!isSame) return res.status(401).json({ error: `${user.email}'s password is incorrect` });
