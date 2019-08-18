@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
+import moment from 'moment';
 import * as userModel from '@models/user';
 import logger from '@util/logger';
 import { sign } from '@util/jwt';
@@ -36,7 +37,13 @@ export const postToken = async (req: Request, res: Response) => {
     if (!isSame) return res.status(401).json({ error: `${user.email}'s password is incorrect` });
 
     const jwt = sign(user);
+
+    const maxAge = 1000 * 60 * 60 * 5;
     // TODO: add secure: true option for Production use.
-    res.cookie('jwt', jwt, { httpOnly: true, maxAge: 1000 * 60 * 60 * 5 });
-    return res.json({ message: `${user.email} is signed in` });
+    res.cookie('jwt', jwt, { httpOnly: true, maxAge });
+    return res.json({
+        email: user.email,
+        admin: user.is_admin,
+        maxAge: moment().add(maxAge, 'milliseconds'),
+    });
 };

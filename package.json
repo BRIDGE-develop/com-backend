@@ -55,7 +55,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged --verbose && lint-staged && npm run test",
+            "pre-commit": "pretty-quick --staged --verbose && lint-staged && npm test",
             "post-merge": "post-npm-install"
         }
     },

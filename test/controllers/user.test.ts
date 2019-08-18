@@ -158,6 +158,7 @@ describe('postToken', () => {
         (read as jest.Mock).mockReturnValue({
             email: body.email,
             password: await bcrypt.hash('password', 10),
+            is_admin: body.is_admin,
         });
 
         const options = {
@@ -172,7 +173,11 @@ describe('postToken', () => {
         );
 
         expect(response.status).toBe(200);
-        expect(await response.json()).toEqual({ message: `${body.email} is signed in` });
+        expect(await response.json()).toEqual({
+            email: body.email,
+            admin: body.is_admin,
+            maxAge: expect.anything(),
+        });
         expect(response.headers.raw()['set-cookie']).toEqual(expect.anything());
     });
 });
