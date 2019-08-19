@@ -176,7 +176,7 @@ describe('postToken', () => {
         expect(await response.json()).toEqual({
             email: body.email,
             admin: body.is_admin,
-            maxAge: expect.anything(),
+            expiredAt: expect.anything(),
         });
         expect(response.headers.raw()['set-cookie']).toEqual(expect.anything());
     });

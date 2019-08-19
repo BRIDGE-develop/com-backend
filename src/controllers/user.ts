@@ -44,6 +44,6 @@ export const postToken = async (req: Request, res: Response) => {
     return res.json({
         email: user.email,
         admin: user.is_admin,
-        maxAge: moment().add(maxAge, 'milliseconds'),
+        expiredAt: moment().add(maxAge, 'milliseconds'),
     });
 };
